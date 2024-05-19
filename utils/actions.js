@@ -3,6 +3,7 @@ import prisma from "@/utils/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { ObjectId } from "mongodb";
 
 export const createTask = async (formData) => {
   "use server";
@@ -43,6 +44,43 @@ export const getAllTasks = async () => {
   });
 };
 
+// export const deleteTask = async (formData) => {
+//   "use server";
+//   const id = formData.get("id");
+//   await prisma.task.delete({
+//     where: {
+//       id,
+//     },
+//   });
+//   revalidatePath("/tasks");
+// };
+
+// export const getTask = async (id) => {
+//   const task = prisma.task.findUnique({
+//     where: {
+//       id,
+//     },
+//   });
+//   return task;
+// };
+
+// export const editTask = async (formData) => {
+//   const id = formData.get("id");
+//   const content = formData.get("content");
+//   const completed = formData.get("completed");
+
+//   await prisma.task.update({
+//     where: {
+//       id,
+//     },
+//     data: {
+//       content,
+//       completed: completed === "on" ? true : false,
+//     },
+//   });
+//   redirect("/tasks");
+// };
+
 export const deleteTask = async (formData) => {
   "use server";
   const id = formData.get("id");
@@ -55,7 +93,7 @@ export const deleteTask = async (formData) => {
 };
 
 export const getTask = async (id) => {
-  const task = prisma.task.findUnique({
+  const task = await prisma.task.findUnique({
     where: {
       id,
     },
